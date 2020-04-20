@@ -39,7 +39,8 @@ def chosen(request,id):
 
     return render(request,'analysis/index2.html',params)
 
-
+def instructions(request):
+    return render(request,'analysis/instructions.html')
 def chose(request):
     documents = Document.objects.all()
     n=len(documents)

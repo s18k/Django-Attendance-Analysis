@@ -25,6 +25,7 @@ urlpatterns = [
     path('employee/<int:id>',views.employee,name="employee"),
     path('employee/<int:id>/<int:m>',views.employeem,name="employee"),
     path('chose',views.chose,name="chose"),
+    path('instructions',views.instructions,name="instructions"),
     path('chose/<int:id>',views.chosen,name="chose"),
 
 
