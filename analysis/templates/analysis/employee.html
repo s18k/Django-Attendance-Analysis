@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+  <head>
+
+    <link rel="stylesheet" href="../css/v1.0.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/624ec6011a.js" crossorigin="anonymous"></script>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <title>chart</title>
+  </head>
+  <body>
+
+
+    {% load static %}
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">Employee Attendance</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="http://127.0.0.1:8000/analysis/">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="about">About</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Services
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="#">Action</a>
+              <a class="dropdown-item" href="#">Another action</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#contact">Contact</a>
+          </li>
+
+        </ul>
+        <form method="get" action="/analysis/search/" class="form-inline my-2 my-lg-0">
+          <input name="search" id="search   " class="form-control mr-sm-2" type="search" placeholder="Enter employee name" aria-label="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+      </div>
+    </nav>
+
+ <div class="container-fluid">
+      <div class="row">
+      </div>
+        <div class="col-md-12">
+          <div class="container-fluid">
+              <div class="row" style="padding:2vw;height: fit-content; margin-top: 15px; background: #fafafa;border: 1px solid #e0e0e0;">
+
+                <div class="col-md-4">
+                    <div class="card" style="height: fit-content;width: 15vw; margin-left:auto;margin-right: auto;margin-top: auto;margin-bottom: auto;">
+                      <img style="width: 240px;height: 230px;" src="/media/{{emp.employee_image}}" alt="Image">
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <td>{{emp.employee_name}}</td>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      <tr>
+                          <th>Employee ID</th>
+                          <td>{{emp.employee_id}}</td>
+                        </tr>
+                        <tr>
+                          <th>Post</th>
+                          <td>{{emp.employee_position}}</td>
+                        </tr>
+                        <tr>
+                          <th>Email</th>
+                          <td>{{emp.employee_email}}</td>
+                        </tr>
+                        <tr>
+                          <th>Contact number</th>
+                          <td>{{emp.employee_contact}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+              </div>
+          </div>
+          <h1 style="font-weight:bold;text-align:center;margin-top:10px;">Analysis for {{monthyr}} </h1>
+          <div class="row" style="margin-bottom: 5vw;">
+
+            <div class="col-md-5" style="margin-left: auto;margin-right: auto;background: #fafafa;border: 1px solid #e0e0e0;padding: 2%;margin-top: 5vw;" >
+              <canvas id="myChart3"></canvas>
+              <script>
+                      var ctx3 = document.getElementById('myChart3');
+                      Chart.defaults.global.defaultFontStyle = 'Bold'
+                      var myChart3 = new Chart(ctx3, {
+                      type: 'horizontalBar', //bar,horizontalBar,pie,Line,doughnut,radar,polarArea
+                      data: {
+                          labels: ['Total','Medical', 'Casual', 'Onduty'],
+                          datasets: [{
+                              data: [{{totalleaves}},{{medical}},{{casual}},{{odleave}}],
+                              backgroundColor: [
+
+                                  'rgba(0, 128, 255, 0.6)',
+                                  'rgba(255, 10, 0,0.6)',
+                                  'rgba(0, 153, 0, 0.6)',
+                                  'rgba(255, 255, 1, 0.6)',
+                              ],
+                              borderColor: [
+                                  'rgba(0, 128, 255, 1)',
+
+                                  'rgba(255, 10, 0,1)',
+                                  'rgba(0, 153, 0, 1)',
+                                  'rgba(255, 255, 1, 1)',
+                              ],
+                              borderWidth: 1,
+                              hoverBorderWidth:2,
+                              hoverBorderColor:'#777'
+                            }]
+                      },
+                      options: {
+                        title:{
+                          display:true,
+                          text:"Monthly Leaves with Reason"
+                        },
+                        legend:{
+                          display:false,
+                          position:'top',
+                          labels:{
+                            fontColor:'#000',
+                            fontStyle:"bold"
+                          }
+                        },
+                        scales: {
+                            xAxes: [{
+                                    display: true,
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Days',
+                                    },
+                                    ticks: {
+                                        min:0,
+                                        max:30
+                                    }
+                                }],
+                            yAxes: [{
+                                    display: true,
+                                    ticks: {
+                                        min:0,
+                                        max: 8
+                                    }
+
+                                }]
+                        }
+                      }
+                  });
+
+              </script>
+            </div>
+
+            <div class="col-md-5" style="margin-left: auto;margin-right: auto;background: #fafafa;border: 1px solid #e0e0e0;padding: 2%;margin-top: 5vw;" >
+              <canvas id="myChart2"></canvas>
+              <script>
+
+                  var ctx2 = document.getElementById('myChart2');
+                  var myChart = new Chart(ctx2, {
+                      type: 'bar', //bar,horizontalBar,pie,Line,doughnut,radar,polarArea
+                      data: {
+                          labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+                          datasets: [{
+                              label: 'Number of hours',
+                              data: [{{monday}},{{tuesday}},{{wednesday}},{{thursday}},{{friday}}],
+                              backgroundColor: [
+                                  'rgba(255, 10, 0,0.6)',
+                                  'rgba(0, 128, 255, 0.6)',
+                                  'rgba(255, 255, 1, 0.6)',
+                                  'rgba(0, 153, 0, 0.6)',
+                                  'rgba(153, 51, 255, 0.6)'
+                                  ],
+                              borderColor: [
+                                  'rgba(255, 10, 0,1)',
+                                  'rgba(0, 128, 255, 1)',
+                                  'rgba(255, 255, 1, 1)',
+                                  'rgba(0, 153, 0, 1)',
+                                  'rgba(153, 51, 255, 1)'
+                              ],
+                              borderWidth: 1,
+                              hoverBorderWidth:2,
+                              hoverBorderColor:'#777'
+                          }]
+                      },
+                      options: {
+                        title:{
+                          display:true,
+                          text:"Average Working Hours"
+                        },
+                        legend:{
+                          display:false,
+                          position:'right',
+                          labels:{
+                            fontColor:'#'
+                          }
+                        },
+
+                        scales: {
+                            xAxes: [{
+                                    display: true,
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Days',
+                                    },
+                                }],
+                            yAxes: [{
+                                    display: true,
+                                    ticks: {
+                                        min:0,
+                                        max: 10
+                                    }
+                                }]
+                        }
+
+                      }
+                  });
+
+              </script>
+            </div>
+
+            <div class="col-md-5" style="margin-left: auto;margin-right: auto;background: #fafafa;border: 1px solid #e0e0e0;padding: 2%;margin-top: 5vw;" >
+              <canvas id="myChart4"></canvas>
+              <script>
+                      var ctx4 = document.getElementById('myChart4');
+                      var myChart4 = new Chart(ctx4, {
+                      type: 'line', //bar,horizontalBar,pie,Line,doughnut,radar,polarArea
+                      data: {
+                          labels: [{{days}}],
+                          datasets: [{
+                              label: 'Number of hours worked',
+                              data: [{{work}}],
+                              backgroundColor: [
+                                  'rgba(0, 128, 255, 0.6)',
+                              ],
+                              borderColor: [
+                                  'rgba(0, 128, 255, 1)',
+                              ],
+                              borderWidth: 1,
+                              hoverBorderWidth:2,
+                              hoverBorderColor:'#777'
+                            }]
+                      },
+                      options: {
+                        title:{
+                          display:true,
+                          text:" Number of hours worked on each day of the month "
+                        },
+                        legend:{
+                          display:false,
+                          position:'top',
+                          labels:{
+                            fontColor:'#000'
+                          }
+                        },
+                        scales: {
+                            xAxes: [{
+                                    display: true,
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Date',
+                                    },
+                                }],
+                            yAxes: [{
+                                    display: true,
+                                    ticks: {
+                                        min:0
+                                    },
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Hours',
+                                    },
+
+                                }]
+                        }
+
+                      }
+                  });
+
+              </script>
+            </div>
+
+            <div class="col-md-5" style="margin-left: auto;margin-right: auto;background: #fafafa;border: 1px solid #e0e0e0;padding: 2%;margin-top: 5vw;" >
+              <canvas id="myChart5"></canvas>
+              <script>
+
+                  var ctx5 = document.getElementById('myChart5');
+                  var myChart = new Chart(ctx5, {
+                      type: 'pie', //bar,horizontalBar,pie,Line,doughnut,radar,polarArea
+                      data: {
+                          labels: ['Total Working Hours', 'Total On Duty Leaves Hours'],
+                          datasets: [{
+                              label: '# of Votes',
+                              data: [{{totalworking}},{{totalodleave}}],
+                              backgroundColor: [
+                                  'rgba(0, 153, 0, 0.9)',
+                                  'rgba(255, 10, 0,0.6)',
+                                  ],
+                              borderColor: [
+                                  'rgba(0, 153, 0, 1)',
+                                  'rgba(255, 10, 0,1)',
+                              ],
+                              borderWidth: 1,
+                              hoverBorderWidth:2,
+                              hoverBorderColor:'#777'
+                          }]
+                      },
+                      options: {
+                        title:{
+                          display:true,
+                          text:"Monthly Working And Leave Hours"
+                        },
+                        legend:{
+                          labels:{
+                            fontColor:'#000'
+                          }
+                        },
+                      }
+                  });
+
+              </script>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+</body>
+</html>
