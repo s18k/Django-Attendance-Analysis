@@ -8,8 +8,9 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-    <title>Hello, world!</title>
+    <title>Instructions</title>
   </head>
+  {% load static %}
   <body>
   <div class="container-fluid" style="margin:10px;">
     <div class="jumbotron">
@@ -17,10 +18,11 @@
   <p class="lead">The detailed analysis and visualizations of employee's attendance is done with the excel sheets</p>
   <hr class="my-4">
   <p>Instructions for excel document to be uploaded</p>
-  <p>The document must contain the following field</p>
-
-  <p>The document must contain the following field</p>
-
+  <p>The document must contain the following field with the same naming conventions</p>
+  <p>EmployeeID,Name,Date,Day,InTime,OutTime,ODOutTime,ONINTime,Leave</p>
+  <img src="{% static 'analysis/Sample_File.png' %}">
+  <br>
+  <br>
   <a class="btn btn-primary btn-lg" href="/admin/analysis/document/" role="button">Add/Edit Employees or Files</a>
 
 </div>
