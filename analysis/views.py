@@ -4,6 +4,7 @@ from django.http import HttpResponse
 import pandas as pd
 import datetime
 from .models import Document
+from math import ceil
 def index(request):
     months={1:"January",2:"February",3:"March",4:"April",5:"May",6:"June",7:"July",8:"August",9:"September",10:"October"
             ,11:"November",12:"December"}
@@ -12,7 +13,10 @@ def index(request):
     print(documents)
     print(employees)
     doc=Document.objects.get(monthnumber=1)
-    params={'employee':employees,'Document':doc,'month':months[1]}
+    n=len(employees)
+
+    nSlides=n//5 +ceil((n/4)-(n//4))
+    params={'employee':employees,'Document':doc,'month':months[1],'no_of_slides':nSlides,'range':range(n)}
     return render(request,'analysis/index.html',params)
 def about(request):
     return render(request,'analysis/about.html')
@@ -34,7 +38,11 @@ def chosen(request,id):
     params['month']=months[m]
     s=months[m]+str(yr)
     params['name']=s
+    n = len(employees)
 
+    nSlides = n // 5 + ceil((n / 4) - (n // 4))
+    params['no_of_slides']=nSlides
+    params['range']=range(n)
     print(documents)
 
     return render(request,'analysis/index2.html',params)
